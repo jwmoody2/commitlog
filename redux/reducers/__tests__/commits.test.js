@@ -13,7 +13,8 @@ describe('commits reducer', () => {
       commits: ['test', 'test1', 'test2'],
       type: 'RECEIVE_COMMITS'
     }
-    expect(commits(undefined, {})).toEqual({
+
+    expect(commits({}, startAction)).toEqual({
       commits: ['test', 'test1', 'test2']
     });
   });
