@@ -1,5 +1,7 @@
 const commits = (
-  state = {},
+  state = {
+    commits: []
+  },
   action
 ) => {
   switch (action.type) {
