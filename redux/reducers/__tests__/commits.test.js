@@ -7,4 +7,14 @@ describe('commits reducer', () => {
       commits: []
     });
   });
+
+  it('Should handle RECIEVE_COMMITS and set commit data properly', () => {
+    const startAction = {
+      commits: ['test', 'test1', 'test2'],
+      type: 'RECEIVE_COMMITS'
+    }
+    expect(commits(undefined, {})).toEqual({
+      commits: ['test', 'test1', 'test2']
+    });
+  });
 });
