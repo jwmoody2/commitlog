@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import { fetchCommits } from '../../redux/actions/commits';
 
 interface AppProps {
   commits?: string[];
+  fetchCommits?: Function;
 }
 
 export class CommitList extends Component<AppProps> {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    this.props.fetchCommits();
   }
   
   renderCommits = ({ item }) => (
@@ -32,4 +38,8 @@ export const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(CommitList);
+export const mapDispatchToProps = {
+  fetchCommits
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommitList);

@@ -8,7 +8,7 @@ import renderer from 'react-test-renderer';
 
 describe('CommitList Component', () => {
   test('renders', () => {
-    renderer.create(<CommitList />);
+    renderer.create(<CommitList fetchCommits={jest.fn()} />);
   })
 
   it('Values sent in as props should be mapped correctly', () => {
