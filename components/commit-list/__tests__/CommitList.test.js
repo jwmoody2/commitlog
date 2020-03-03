@@ -44,4 +44,15 @@ describe('CommitList Component', () => {
 
     expect(testInstance.findByType(Text).props.children).toEqual('No Commits Available');
   });
+
+  it('Make axios call to fetch commits on mount', () => {
+    const baseProps = {
+      commits: [],
+      fetchCommits: jest.fn()
+    };
+
+    const wrapper = renderer.create(<CommitList {...baseProps}/>);
+
+    expect(baseProps.fetchCommits).toHaveBeenCalled();
+  });
 });
