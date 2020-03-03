@@ -12,5 +12,5 @@ it('Creates RECEIVE_COMMITS when retrieving list of commits', () => {
   const store = mockStore();
 
   store.dispatch(actions.commitsReceived());
-  expect(store.getAction()).toEqual(expectedActions);
+  expect(store.getActions()).toEqual(expectedActions);
 });
