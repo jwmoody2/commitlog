@@ -18,12 +18,11 @@ export class CommitList extends Component<AppProps> {
   render() {
     const { commits } = this.props;
 
-    return (
-      <FlatList
-        data={commits}
-        renderItem={this.renderCommits}
-      />
-    );
+    if (commits && 0 < commits.length) {
+      return (<FlatList data={commits} renderItem={this.renderCommits} />)
+    } else {
+      return (<Text>No Commits Available</Text>)
+    }
   }
 }
 
