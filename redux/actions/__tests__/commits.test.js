@@ -1,4 +1,5 @@
 import configureMockStore from 'redux-mock-store';
+import moxios from 'moxios';
 import thunk from 'redux-thunk';
 import expect from 'expect';
 import * as actions from '../commits';
@@ -6,11 +7,39 @@ import * as actions from '../commits';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-it('Creates RECEIVE_COMMITS when retrieving list of commits', () => {
-  const expectedActions = [{type: 'RECEIVE_COMMITS' }];
+describe('Commit actions', () => {
+  beforeEach(function() {
+    moxios.install();
+  });
 
-  const store = mockStore();
+  afterEach(function() {
+    moxios.uninstall
+  })
 
-  store.dispatch(actions.commitsReceived());
-  expect(store.getActions()).toEqual(expectedActions);
+  it('Creates RECEIVE_COMMITS when commits data returns on call', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [{commit: 'test1'}, {commit: 'test2'}]
+      })
+    });
+
+    const expectedActions = [
+      { commits: [{commit: 'test1'}, {commit: 'test2'}], type: 'RECEIVE_COMMITS' }
+    ];
+    const store = mockStore();
+    return store.dispatch(actions.fetchCommits()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    })
+  })
+
+  it('Creates RECEIVE_COMMITS when calling commitsReceived action', () => {
+    const expectedActions = [{type: 'RECEIVE_COMMITS' }];
+
+    const store = mockStore();
+
+    store.dispatch(actions.commitsReceived());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
 });
