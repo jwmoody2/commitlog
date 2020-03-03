@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
-export class CommitList extends Component {
+interface AppProps {
+  commits?: string[];
+}
+
+export class CommitList extends Component<AppProps> {
   constructor(props) {
     super(props);
   }
   
+  renderCommits = ({ item }) => (
+    <Text key={item}>{item}</Text>
+  );
+
   render() {
+    const { commits } = this.props;
+
     return (
-      <Text>CommitList!</Text>
+      <FlatList
+        data={commits}
+        renderItem={this.renderCommits}
+      />
     );
   }
 }
