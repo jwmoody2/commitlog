@@ -34,12 +34,44 @@ describe('Commit actions', () => {
     })
   })
 
+  it('Creates RECEIVE_COMMITS_ERROR when fetching commits fails', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 500,
+        response: { status: 500, data: { error: { description: 'There was an error'}}}
+      })
+    });
+
+    const expectedActions = [
+      { error: {
+        response: { status: 500, data: { error: { description: 'There was an error'}}},
+        status: 500
+      },
+        type: 'RECEIVE_COMMITS_ERROR'
+      }
+    ];
+    const store = mockStore();
+    return store.dispatch(actions.fetchCommits()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    })
+  })
+
   it('Creates RECEIVE_COMMITS when calling commitsReceived action', () => {
     const expectedActions = [{type: 'RECEIVE_COMMITS' }];
 
     const store = mockStore();
 
     store.dispatch(actions.commitsReceived());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('Creates RECEIVE_COMMITS_ERROR when calling commitsReceivedError action', () => {
+    const expectedActions = [{type: 'RECEIVE_COMMITS_ERROR' }];
+
+    const store = mockStore();
+
+    store.dispatch(actions.commitsReceivedError());
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
