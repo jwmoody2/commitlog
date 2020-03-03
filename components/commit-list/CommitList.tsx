@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
+import { connect } from 'react-redux';
 
 export class CommitList extends Component {
   constructor(props) {
@@ -13,4 +14,10 @@ export class CommitList extends Component {
   }
 }
 
-export default CommitList;
+export const mapStateToProps = state => {
+  return {
+    commits: state.commits.commits
+  };
+};
+
+export default connect(mapStateToProps)(CommitList);
