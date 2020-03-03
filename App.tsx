@@ -3,8 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import configureStore from './redux/configureStore';
-import axios from 'axios';
-import axiosMiddleware from 'redux-axios-middleware';
 
 const store = configureStore();
 
