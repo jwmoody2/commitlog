@@ -23,6 +23,7 @@ describe('CommitList Component', () => {
 
   it('Display multiple commits', () => {
     const baseProps = {
+      fetchCommits: jest.fn(),
       commits: ['test1', 'test2', 'test3']
     };
 
@@ -30,5 +31,17 @@ describe('CommitList Component', () => {
     const testInstance = wrapper.root;
 
     expect(testInstance.findAllByType(Text).length).toEqual(3);
+  });
+
+  it('Display message if no commits are available', () => {
+    const baseProps = {
+      commits: [],
+      fetchCommits: jest.fn()
+    };
+
+    const wrapper = renderer.create(<CommitList {...baseProps}/>);
+    const testInstance = wrapper.root;
+
+    expect(testInstance.findByType(Text).props.children).toEqual('No Commits Available');
   });
 });
