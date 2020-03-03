@@ -1,10 +1,15 @@
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
 import { CommitList } from '../CommitList';
 import { mapStateToProps } from '../CommitList';
 import { Text } from 'react-native';
 
 import renderer from 'react-test-renderer';
+
+const mockCommitsData = [
+  { sha: '1234', commit: { message: 'First Commit', author: { name: 'Joe Moody' }}},
+  { sha: '5678', commit: { message: 'Second Commit', author: { name: 'Joe Moody' }}},
+  { sha: 'abcd', commit: { message: 'Third Commit', author: { name: 'Joe Moody' }}}
+];
 
 describe('CommitList Component', () => {
   test('renders', () => {
@@ -24,13 +29,13 @@ describe('CommitList Component', () => {
   it('Display multiple commits', () => {
     const baseProps = {
       fetchCommits: jest.fn(),
-      commits: ['test1', 'test2', 'test3']
+      commits: mockCommitsData
     };
 
     const wrapper = renderer.create(<CommitList {...baseProps}/>);
     const testInstance = wrapper.root;
 
-    expect(testInstance.findAllByType(Text).length).toEqual(3);
+    expect(testInstance.findAllByType(Text).length).toEqual(9);
   });
 
   it('Display message if no commits are available', () => {
@@ -54,5 +59,17 @@ describe('CommitList Component', () => {
     const wrapper = renderer.create(<CommitList {...baseProps}/>);
 
     expect(baseProps.fetchCommits).toHaveBeenCalled();
+  });
+
+  it('Name, SHA, and message is displayed for a commit', () => {
+    const baseProps = {
+      commits: mockCommitsData,
+      fetchCommits: jest.fn()
+    };
+
+    const wrapper = renderer.create(<CommitList {...baseProps}/>);
+    const testInstance = wrapper.root;
+
+    expect(testInstance.findAllByType(Text).length).toEqual(9);
   });
 });

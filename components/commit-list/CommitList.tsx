@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, FlatList } from 'react-native';
+import { StyleSheet, Text, FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchCommits } from '../../redux/actions/commits';
 
@@ -18,19 +18,33 @@ export class CommitList extends Component<AppProps> {
   }
   
   renderCommits = ({ item }) => (
-    <Text key={item}>{item}</Text>
+    <View key={item.sha} style={styles.item}>
+      <Text>{item.commit.author.name}</Text>
+      <Text>{item.sha}</Text>
+      <Text>{item.commit.message}</Text>
+    </View>
   );
 
   render() {
     const { commits } = this.props;
 
     if (commits && 0 < commits.length) {
-      return (<FlatList data={commits} renderItem={this.renderCommits} />)
+      return (<FlatList style={styles.container} data={commits} renderItem={this.renderCommits} />)
     } else {
       return (<Text>No Commits Available</Text>)
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  item: {
+    padding: 12,
+    borderBottomWidth: 1
+  }
+})
 
 export const mapStateToProps = state => {
   return {
